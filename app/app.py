@@ -8,8 +8,8 @@ def create_app():
     app = Flask(__name__)
 
     # In-memory store (fine for a demo; resets on restart).
-    items = {"name":"sai"}
-    state = {"next_id": 1}
+    items = {1: {"id": 1, "name": "sai"}}
+    state = {"next_id": 2}
 
     @app.get("/")
     def index():
