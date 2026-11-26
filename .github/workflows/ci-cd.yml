@@ -118,10 +118,17 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set up SSH key
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          # Strip Windows CRLF + leading spaces, and guarantee a trailing newline
+          printf '%s\n' "$SSH_PRIVATE_KEY" | tr -d '\r' | sed 's/^[[:space:]]*//' > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
+          # Fail early with a clear message if the key is still malformed
+          ssh-keygen -y -f ~/.ssh/deploy_key > /dev/null \
+            && echo "Private key format OK" \
+            || { echo "::error::EC2_SSH_PRIVATE_KEY is not a valid private key"; exit 1; }
 
       - name: Wait for SSH to come up
         run: |
