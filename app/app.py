@@ -8,7 +8,7 @@ def create_app():
     app = Flask(__name__)
 
     # In-memory store (fine for a demo; resets on restart).
-    items = {}
+    items = {"sai"}
     state = {"next_id": 1}
 
     @app.get("/")
