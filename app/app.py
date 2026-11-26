@@ -14,7 +14,7 @@ def create_app():
     @app.get("/")
     def index():
         return jsonify(
-            message="Flask API deployed with GitHub Actions + Terraform",
+            message="Hello Sai , Party less , work more",
             version=os.getenv("APP_VERSION", "local"),
         )
 
